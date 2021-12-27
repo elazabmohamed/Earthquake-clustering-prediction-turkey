@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import weka.core.Instance;
 import weka.core.Instances;
+import weka.core.ManhattanDistance;
 import weka.core.SelectedTag;
 import weka.core.converters.ArffLoader;
 import weka.classifiers.Evaluation;
@@ -38,6 +39,7 @@ public class App {
             // Specify the amount of clusters and building the cluster
             skm.setNumClusters(ClusterNum);
             skm.setSeed(10);
+            //skm.setDistanceFunction(new ManhattanDistance());
             //skm.setDontReplaceMissingValues(false);
    
             // Divide dataset into training and test data //
