@@ -10,27 +10,30 @@ import weka.core.converters.ArffLoader;
 
 public class ClusteringModel {
     static List<String[]> dataLines = new ArrayList<>();
-    static int ClusterNum = 3;
+    //static int ClusterNum = 3;
     static ArffLoader loader;
     static String MainDTPath;
+    static String EvalFileName;
 
 
-    public void Clustering(String DatasetPath) throws Exception{
-        process(getDataset(DatasetPath));
+    public void Clustering(String DatasetPath, int ClusterNum) throws Exception{
+        File f = new File(DatasetPath);
+		EvalFileName = f.getName().toString().replace(".csv", "");
+        process(getDataset(DatasetPath), ClusterNum);
         
     }
     private Instances getDataset(String DatasetPath) throws IOException{
         
         //  Read the data from the arff data file
-        loader= new ArffLoader();
+        loader = new ArffLoader();
         MainDTPath = new File(CSVtoARFF.ConvertToArff(DatasetPath)).getAbsolutePath();
         System.out.println(MainDTPath);
         loader.setSource(new File(MainDTPath));
-        Instances MainDT= loader.getDataSet();
+        Instances MainDT = loader.getDataSet();
         return MainDT;
 
     }
-    private void process(Instances MainDT) throws IOException{
+    private void process(Instances MainDT, int ClusterNum) throws IOException{
         
         // Create a new KMeans instance
         SimpleKMeans skm = new SimpleKMeans();
@@ -45,6 +48,11 @@ public class ClusteringModel {
             OutputToCSV(MainDT, skm, MainDTPath);
 
             System.out.println("Squared Error: " + skm.getSquaredError());
+            
+            PrintWriter out = new PrintWriter("Evaluation_Clustering_"+EvalFileName+".txt");
+            out.println("Squared Error: " + skm.getSquaredError());
+            out.println("Centroids: " + skm.getClusterCentroids());
+            out.close();
         } catch (Exception e) {
             System.err.println(e);
         }

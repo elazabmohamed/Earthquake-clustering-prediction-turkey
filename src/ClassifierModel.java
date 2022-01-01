@@ -1,4 +1,5 @@
 import java.io.File;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import weka.core.Instances;
@@ -12,15 +13,14 @@ import weka.classifiers.trees.J48;
 
 public class ClassifierModel {
 	static ArffLoader loader;
+	static String EvalFileName;
 
-	public void FayHatli(String DatasetPath) throws Exception{
+	public void Classifier(String DatasetPath) throws Exception{
+		File f = new File(DatasetPath);
+		EvalFileName = f.getName().toString().replace(".csv", "");
 		process(getDataset(DatasetPath));
 	}
 	
-	public void FayHatsiz(String DatasetPath) throws Exception{
-		process(getDataset(DatasetPath));
-	}
-
 
    private List<Instances> getDataset(String DatasetPath) throws Exception{
 	loader = new ArffLoader();
@@ -68,6 +68,17 @@ public class ClassifierModel {
 	System.out.println(eval.toMatrixString());
 	System.out.println(eval.toClassDetailsString());
 
+
+	PrintWriter out = new PrintWriter("Evaluation_Classifier_"+EvalFileName+".txt");
+	out.println("\tDecision Tree Evaluation ");
+	out.println(eval.toSummaryString());
+	out.print(" the expression for the input data as per alogorithm is ");
+	out.println(classifier);
+	out.println(eval.toMatrixString());
+	out.println(eval.toClassDetailsString());
+	out.close();
+
+
 	/*
 	ArrayList<Prediction> predictions = eval.predictions();
 	for (int i = 0, testSize = TestDT.size(); i < testSize-1; i++) {
@@ -95,11 +106,4 @@ public class ClassifierModel {
 	}
 	*/
    }
-
-   
-
-
-
-
-
 }
