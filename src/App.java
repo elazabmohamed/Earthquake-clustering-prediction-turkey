@@ -1,5 +1,4 @@
 public class App {
-
     public static void main(String[] args) throws Exception {
         ClassifierModel WfaultLine = new ClassifierModel();
         System.out.println("\n\n\n\n\n\n\n\n");

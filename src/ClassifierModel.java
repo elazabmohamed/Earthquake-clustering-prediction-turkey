@@ -32,9 +32,9 @@ public class ClassifierModel {
 	String Dataset = new File(CSVtoARFF.ConvertToArff(DatasetPath)).getAbsolutePath();
 	System.out.println("Selected path for dataset is: " + Dataset);
 	loader.setSource(new File(Dataset));
-	NumericMainDT= loader.getDataSet();
+	NumericMainDT = loader.getDataSet();
 
-	NumericToNominal convert= new NumericToNominal();
+	NumericToNominal convert = new NumericToNominal();
 	
 	convert.setInputFormat(NumericMainDT);
 	MainDT = Filter.useFilter(NumericMainDT, convert);
@@ -51,7 +51,6 @@ public class ClassifierModel {
 	instances.add(TrainDT);
 	instances.add(TestDT);
 	return instances;
-
    }
 
    private  void process(List<Instances> instances) throws Exception {
