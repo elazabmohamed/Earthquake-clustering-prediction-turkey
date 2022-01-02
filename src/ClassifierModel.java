@@ -30,7 +30,7 @@ public class ClassifierModel {
 	Instances TrainDT;
 
 	String Dataset = new File(CSVtoARFF.ConvertToArff(DatasetPath)).getAbsolutePath();
-	System.out.println(Dataset);
+	System.out.println("Selected path for dataset is: " + Dataset);
 	loader.setSource(new File(Dataset));
 	NumericMainDT= loader.getDataSet();
 
@@ -70,7 +70,8 @@ public class ClassifierModel {
 
 
 	PrintWriter out = new PrintWriter("Evaluation_Classifier_"+EvalFileName+".txt");
-	out.println("\tDecision Tree Evaluation ");
+	out.println("\" " + EvalFileName +" \""+" verinin sonucu\n");
+	out.println("Decision Tree Evaluation ");
 	out.println(eval.toSummaryString());
 	out.print(" the expression for the input data as per alogorithm is ");
 	out.println(classifier);

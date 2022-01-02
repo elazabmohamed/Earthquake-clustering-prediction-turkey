@@ -1,3 +1,5 @@
+" Non_Clustered_Data " verinin sonucu
+
 Squared Error: 4076.7218455221364
 Centroids: @relation Non_Clustered_Data-weka.filters.unsupervised.attribute.ReplaceMissingValues
 

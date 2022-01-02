@@ -10,7 +10,6 @@ import weka.core.converters.ArffLoader;
 
 public class ClusteringModel {
     static List<String[]> dataLines = new ArrayList<>();
-    //static int ClusterNum = 3;
     static ArffLoader loader;
     static String MainDTPath;
     static String EvalFileName;
@@ -27,7 +26,7 @@ public class ClusteringModel {
         //  Read the data from the arff data file
         loader = new ArffLoader();
         MainDTPath = new File(CSVtoARFF.ConvertToArff(DatasetPath)).getAbsolutePath();
-        System.out.println(MainDTPath);
+        System.out.println("Selected path for dataset is: "+MainDTPath);
         loader.setSource(new File(MainDTPath));
         Instances MainDT = loader.getDataSet();
         return MainDT;
@@ -49,7 +48,8 @@ public class ClusteringModel {
 
             System.out.println("Squared Error: " + skm.getSquaredError());
             
-            PrintWriter out = new PrintWriter("Evaluation_Clustering_"+EvalFileName+".txt");
+            PrintWriter out = new PrintWriter("Evaluation_Clustering_" + EvalFileName + ".txt");
+            out.println("\" " + EvalFileName +" \""+" verinin sonucu\n");
             out.println("Squared Error: " + skm.getSquaredError());
             out.println("Centroids: " + skm.getClusterCentroids());
             out.close();
@@ -75,7 +75,6 @@ public class ClusteringModel {
             sb.append("\r\n");
     
         for (Instance instance : MainDT) {
-            //System.out.printf("(%.4f, %.4f): %s%n", instance.value(0), instance.value(1), skm.clusterInstance(instance));
             sb.append(String.valueOf(instance.value(0)));
             sb.append(",");
             sb.append(String.valueOf(instance.value(1)));

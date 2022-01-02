@@ -1,4 +1,6 @@
-	Decision Tree Evaluation 
+" fayhatli " verinin sonucu
+
+Decision Tree Evaluation 
 
 Correctly Classified Instances        1092               75.3103 %
 Incorrectly Classified Instances       358               24.6897 %
