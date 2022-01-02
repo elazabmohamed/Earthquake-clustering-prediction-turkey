@@ -78,33 +78,5 @@ public class ClassifierModel {
 	out.println(eval.toMatrixString());
 	out.println(eval.toClassDetailsString());
 	out.close();
-
-
-	/*
-	ArrayList<Prediction> predictions = eval.predictions();
-	for (int i = 0, testSize = TestDT.size(); i < testSize-1; i++) {
-        Instance instance = TestDT.get(i);
-        Prediction prediction = predictions.get(i);
-
-        if (prediction.actual() != prediction.predicted()) {
-
-            System.out.println(instance);;
-
-        }
-
-    }
-
-	System.out.println("***************************************");
-	for (int i = 0, trainSize = TrainDT.size(); i < 300; i++) {
-        Instance instance = TrainDT.get(i);
-        Prediction prediction = predictions.get(i);
-
-        if (prediction.actual() != prediction.predicted()) {
-
-            System.out.println(instance);;
-
-        }
-	}
-	*/
    }
 }
