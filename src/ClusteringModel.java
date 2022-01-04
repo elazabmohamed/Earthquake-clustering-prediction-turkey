@@ -3,6 +3,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
+
+import weka.classifiers.Evaluation;
+import weka.clusterers.Canopy;
 import weka.clusterers.SimpleKMeans;
 import weka.core.Instance;
 import weka.core.Instances;
@@ -18,7 +21,7 @@ public class ClusteringModel {
     public void Clustering(String DatasetPath, int ClusterNum) throws Exception{
         File f = new File(DatasetPath);
 		EvalFileName = f.getName().toString().replace(".csv", "");
-        process(getDataset(DatasetPath), ClusterNum);
+        processCanopy(getDataset(DatasetPath), ClusterNum);
         
     }
     private Instances getDataset(String DatasetPath) throws IOException{
@@ -32,35 +35,27 @@ public class ClusteringModel {
         return MainDT;
 
     }
-    private void process(Instances MainDT, int ClusterNum) throws IOException{
-        
-        // Create a new KMeans instance
-        SimpleKMeans skm = new SimpleKMeans();
-        System.out.printf("%d Clusters\n", ClusterNum);
-        try {
-            // Specify the amount of clusters and building the cluster
-            skm.setNumClusters(ClusterNum);
-            skm.setSeed(10);
-            skm.buildClusterer(MainDT);
-            skm.setMaxIterations(10); 
 
-            OutputToCSV(MainDT, skm, MainDTPath);
+    private void processCanopy(Instances MainDT, int ClusterNum) throws Exception{
 
-            System.out.println("Squared Error: " + skm.getSquaredError());
-            
-            PrintWriter out = new PrintWriter("Evaluation_Clustering_" + EvalFileName + ".txt");
-            out.println("\" " + EvalFileName +" \""+" verinin sonucu\n");
-            out.println("Squared Error: " + skm.getSquaredError());
-            out.println("Centroids: " + skm.getClusterCentroids());
-            out.close();
-        } catch (Exception e) {
-            System.err.println(e);
-        }
- 
+        Canopy canopy = new Canopy();
+        canopy.setNumClusters(ClusterNum);
+        System.out.printf("%d Clusters: \n", ClusterNum);
+        canopy.setSeed(1);
+        canopy.setT1(-1.25);
+        canopy.setT2(-1.0);
+        canopy.setMinimumCanopyDensity(2.0);
+        canopy.setMaxNumCandidateCanopiesToHoldInMemory(100);
+        canopy.buildClusterer(MainDT);
+        canopy.setPeriodicPruningRate(10000);
+        canopy.setDebug(false);
+        canopy.setDoNotCheckCapabilities(false);
+        canopy.setDontReplaceMissingValues(false);
+
+        OutputToCSV(MainDT, canopy, MainDTPath); 
     }
-
-    private void OutputToCSV(Instances MainDT, SimpleKMeans skm, String MainDTPath) throws Exception {
-       //System.out.println(MainTD (1));
+    
+    private void OutputToCSV(Instances MainDT, Canopy canopy, String MainDTPath) throws Exception {
         String MainDTCSVPath = MainDTPath.replaceAll(".arff", "_Output.csv");
         PrintWriter pw;
         StringBuilder sb;
@@ -79,14 +74,13 @@ public class ClusteringModel {
             sb.append(",");
             sb.append(String.valueOf(instance.value(1)));
             sb.append(",");
-            sb.append(String.valueOf(skm.clusterInstance(instance)));
+            sb.append(String.valueOf(canopy.clusterInstance(instance)));
             sb.append("\r\n");
         
             dataLines.add(new String[]{String.valueOf(instance.value(0)), String.valueOf(instance.value(1)), 
-                String.valueOf(skm.clusterInstance(instance))});
+                String.valueOf(canopy.clusterInstance(instance))});
             }
         pw.write(sb.toString());
         pw.close();
     }
-    
 }

@@ -2,6 +2,8 @@ import java.io.File;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+
 import weka.core.Instances;
 import weka.core.converters.ArffLoader;
 import weka.classifiers.Evaluation;
@@ -54,10 +56,12 @@ public class ClassifierModel {
    }
 
    private  void process(List<Instances> instances) throws Exception {
-    Classifier classifier = new J48();
+	Random ran = new Random();
+    J48 classifier = new J48();
 	classifier.buildClassifier(instances.get(0));
+	classifier.setSeed(ran.nextInt(100));
 	Evaluation eval = new Evaluation(instances.get(0));
-	//eval.crossValidateModel(classifier, Trainingdt, 10, new Random(1));
+	//eval.crossValidateModel(classifier, instances.get(1), 10, new Random(1));
 	eval.evaluateModel(classifier, instances.get(1));
 
 	System.out.println("\tDecision Tree Evaluation ");
